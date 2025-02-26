@@ -1,4 +1,5 @@
 import { ArrowPathIcon, CloudArrowUpIcon, FingerPrintIcon, LockClosedIcon } from '@heroicons/react/24/outline'
+import { Link } from 'react-router-dom';
 
 function Hero() {
     const features = [
@@ -21,7 +22,7 @@ function Hero() {
             icon: ArrowPathIcon,
         },
         {
-            name: 'Não tem o que colocar mais',
+            name: 'Não tem o que colocar mais 2',
             description:
                 'Criado por Lucas Nascimento.',
             icon: FingerPrintIcon,
@@ -51,12 +52,12 @@ function Hero() {
                             Facilitando o caminho para o conhecimento.
                         </p>
                         <div className="mt-10 flex items-center justify-center gap-x-6">
-                            <a
-                                href="#"
+                            <Link
+                                to="/Registrar"
                                 className="rounded-md bg-blue-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
                                 Começar
-                            </a>
+                            </Link>
                         </div>
                     </div>
                     <img src="study.png" />
