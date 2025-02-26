@@ -6,20 +6,26 @@ import Sobre from "./pages/about/sobre";
 import Footer from "./pages/footer/footer";
 import Login from "./pages/user/login";
 import Categorias from "./pages/categorias/categorias";
+import { UserProvider } from "./userContext";
+import api from "./services/axios";
+import Perfil from "./pages/user/perfil";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Hero />} />
-        <Route path="/Registrar" element={<Registro />} />
-        <Route path="/Login" element={<Login />} />
-        <Route path="/Sobre" element={<Sobre />} />
-        <Route path="/Categorias" element={<Categorias />} />
-      </Routes>
-      <Footer />
-    </BrowserRouter>
+    <UserProvider>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Hero />} />
+          <Route path="/Registrar" element={<Registro />} />
+          <Route path="/Login" element={<Login />} />
+          <Route path="/Sobre" element={<Sobre />} />
+          <Route path="/Categorias" element={<Categorias />} />
+          <Route path="/Perfil" element={<Perfil />} />
+        </Routes>
+        <Footer />
+      </BrowserRouter>
+    </UserProvider>
   );
 }
 

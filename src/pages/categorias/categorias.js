@@ -1,135 +1,45 @@
 import { PencilIcon, PlusCircleIcon, TrashIcon } from '@heroicons/react/24/outline'
+import api from '../../services/axios';
+import { useEffect, useState } from 'react';
+import { useUser } from '../../userContext';
 function Categorias() {
-    const categorias = [
-        {
-            "id": 3,
-            "nome": "Desenvolvimento de sistemas",
-            "tarefas": [
-                {
-                    "id": 9,
-                    "nome": "RpgApi",
-                    "dataTermino": "05/12/2025",
-                    "prioridade": 2,
-                    "completo": true,
-                    "categoriaId": 3
-                },
-                {
-                    "id": 11,
-                    "nome": "Estudos API Front",
-                    "dataTermino": "11/12/2025",
-                    "prioridade": 2,
-                    "completo": false,
-                    "categoriaId": 3
+    const [categorias, setCategorias] = useState([]);
+    const [error, setError] = useState(false);
+    const { user } = useUser();
+
+    useEffect(() => {
+        if (user) {
+            api.get(`/Categorias/GetByUsuario/${user.id}`, {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
                 }
-            ],
-            "usuarioId": 1,
-            "usuario": null
-        },
-        {
-            "id": 4,
-            "nome": "PWEB2",
-            "tarefas": [
-                {
-                    "id": 10,
-                    "nome": "ComuniTec API",
-                    "dataTermino": "05/12/2025",
-                    "prioridade": 2,
-                    "completo": true,
-                    "categoriaId": 4
-                },
-                {
-                    "id": 13,
-                    "nome": "Pw-Study",
-                    "dataTermino": "05/12/2025",
-                    "prioridade": 1,
-                    "completo": true,
-                    "categoriaId": 4
-                }
-            ],
-            "usuarioId": 1,
-            "usuario": null
-        },
-        {
-            "id": 25,
-            "nome": "Programação Mobile",
-            "tarefas": [
-                {
-                    "id": 12,
-                    "nome": "Clima Tempo",
-                    "dataTermino": "06/12/2025",
-                    "prioridade": 2,
-                    "completo": false,
-                    "categoriaId": 25
-                }
-            ],
-            "usuarioId": 1,
-            "usuario": null
-        },
-        {
-            "id": 27,
-            "nome": "API de Correção",
-            "tarefas": [
-                {
-                    "id": 15,
-                    "nome": "Correção do seu trabalho que ficou ótimo!!",
-                    "dataTermino": "2024/17/12",
-                    "prioridade": 2,
-                    "completo": false,
-                    "categoriaId": 27
-                }
-            ],
-            "usuarioId": 1,
-            "usuario": null
-        },
-        {
-            "id": 38,
-            "nome": "Matematica",
-            "tarefas": [
-                {
-                    "id": 21,
-                    "nome": "Calculo 1",
-                    "dataTermino": "05/12/2025",
-                    "prioridade": 2,
-                    "completo": false,
-                    "categoriaId": 38
-                }
-            ],
-            "usuarioId": 2,
-            "usuario": null
-        },
-        {
-            "id": 39,
-            "nome": "Fisica",
-            "tarefas": [
-                {
-                    "id": 20,
-                    "nome": "Cinemática",
-                    "dataTermino": "20/01/2025",
-                    "prioridade": 2,
-                    "completo": false,
-                    "categoriaId": 39
-                }
-            ],
-            "usuarioId": 2,
-            "usuario": null
-        },
-        {
-            "id": 40,
-            "nome": "Biologia",
-            "tarefas": [
-                {
-                    "id": 22,
-                    "nome": "Ecologia",
-                    "dataTermino": "02/05/2025",
-                    "prioridade": 1,
-                    "completo": false,
-                    "categoriaId": 40
-                }
-            ],
-            "usuarioId": 2,
-            "usuario": null
+            })
+                .then(function (response) {
+                    setCategorias(response.data);
+                    setError(false);
+                })
+                .catch(function (error) {
+                    console.log(error)
+                    setError(true);
+                })
         }
-    ]
+    }, []);
+
+    if (!user) {
+        return (
+            <div style={{ minHeight: 'calc(100vh - 68px)' }} className="mt-[72px]">
+                <p className='text-4xl text-red-500 text-center'>Você precisa estar logado..</p>
+            </div>
+        )
+    }
+
+    if (error) {
+        return (
+            <div style={{ minHeight: 'calc(100vh - 68px)' }} className="mt-[72px]">
+                <p className='text-4xl text-red-500 text-center'>erro ao carregar categorias..</p>
+            </div>
+        )
+    }
     return (
         <div style={{ minHeight: 'calc(100vh - 68px)' }} className="mt-[72px]">
             <header className="flex items-center justify-center py-2 bg-white shadow-sm">

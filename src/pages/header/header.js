@@ -1,11 +1,13 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Dialog, DialogPanel } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link } from 'react-router-dom'
+import { useUser } from '../../userContext'
 
 const Header = () => {
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+    const { user, setUser } = useUser();
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     return (
         <header className="absolute inset-x-0 top-0 z-50 shadow-lg bg-white">
@@ -16,8 +18,7 @@ const Header = () => {
                         <img
                             alt=""
                             src="study_icon.png"
-                            className="h-8 w-auto"
-                        />
+                            className="h-8 w-auto" />
                         <p className='text-blue-500 font-bold'>EstudosAPI</p>
                     </a>
                 </div>
@@ -32,21 +33,33 @@ const Header = () => {
                     </button>
                 </div>
                 <div className="hidden lg:flex lg:gap-x-12">
-                    <Link to="/" className="text-sm/6 font-semibold text-gray-900"   >
+                    <Link to="/" className="text-sm/6 font-semibold text-gray-900">
                         Inicio
                     </Link>
-                    <Link to="/Sobre" className="text-sm/6 font-semibold text-gray-900"   >
+                    <Link to="/Sobre" className="text-sm/6 font-semibold text-gray-900">
                         Sobre Nós
                     </Link>
                 </div>
-                <div className="hidden lg:flex lg:flex-1 lg:justify-end items-center gap-4">
-                    <Link to="/Registrar" className="text-sm/6 font-semibold text-gray-900"   >
-                        Criar Conta
-                    </Link>
-                    <Link to="/Login" className="rounded-md bg-blue-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                        Logar
-                    </Link>
-                </div>
+                {user && (
+                    <div className="hidden lg:flex lg:flex-1 lg:justify-end items-center gap-4">
+                        <Link to="/Perfil" className="text-sm/6 font-semibold text-gray-900">
+                            Perfil
+                        </Link>
+                        <Link to="/Categorias" className="text-sm/6 font-semibold text-gray-900">
+                            Categorias
+                        </Link>
+                    </div>
+                )}
+                {!user && (
+                    <div className="hidden lg:flex lg:flex-1 lg:justify-end items-center gap-4">
+                        <Link to="/Registrar" className="text-sm/6 font-semibold text-gray-900">
+                            Criar Conta
+                        </Link>
+                        <Link to="/Login" className="rounded-md bg-blue-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                            Logar
+                        </Link>
+                    </div>
+                )}
             </nav>
             <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
                 <div className="fixed inset-0 z-50" />
@@ -57,8 +70,7 @@ const Header = () => {
                             <img
                                 alt=""
                                 src="study_icon.png"
-                                className="h-8 w-auto"
-                            />
+                                className="h-8 w-auto" />
                             <p className='text-blue-500 font-bold'>EstudosAPI</p>
                         </a>
                         <button
@@ -73,21 +85,33 @@ const Header = () => {
                     <div className="mt-6 flow-root">
                         <div className="-my-6 divide-y divide-gray-500/10">
                             <div className="space-y-2 py-6">
-                                <Link to="/" className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"   >
+                                <Link to="/" className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
                                     Inicio
                                 </Link>
-                                <Link to="/Sobre" className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"   >
+                                <Link to="/Sobre" className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
                                     Sobre Nós
                                 </Link>
                             </div>
-                            <div className="py-6 flex flex-col gap-4">
-                                <Link to="/Registrar" className="text-sm/6 font-semibold text-gray-900">
-                                    Criar Conta
-                                </Link>
-                                <Link to="/Login" className="rounded-md bg-blue-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                                    Logar
-                                </Link>
-                            </div>
+                            {user && (
+                                <div className="py-6 flex flex-col gap-4">
+                                    <Link to="/Perfil" className="text-sm/6 font-semibold text-gray-900">
+                                        Perfil
+                                    </Link>
+                                    <Link to="/Categorias" className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
+                                        Categorias
+                                    </Link>
+                                </div>
+                            )}
+                            {!user && (
+                                <div className="py-6 flex flex-col gap-4">
+                                    <Link to="/Registrar" className="text-sm/6 font-semibold text-gray-900">
+                                        Criar Conta
+                                    </Link>
+                                    <Link to="/Login" className="rounded-md bg-blue-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                        Logar
+                                    </Link>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </DialogPanel>
