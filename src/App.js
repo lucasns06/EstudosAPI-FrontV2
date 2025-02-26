@@ -5,6 +5,7 @@ import Registro from "./pages/user/registro";
 import Sobre from "./pages/about/sobre";
 import Footer from "./pages/footer/footer";
 import Login from "./pages/user/login";
+import Categorias from "./pages/categorias/categorias";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/Registrar" element={<Registro />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Sobre" element={<Sobre />} />
+        <Route path="/Categorias" element={<Categorias />} />
       </Routes>
       <Footer />
     </BrowserRouter>
