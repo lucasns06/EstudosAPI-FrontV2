@@ -6,7 +6,8 @@ function Categorias() {
     const [categorias, setCategorias] = useState([]);
     const [error, setError] = useState(false);
     const { user } = useUser();
-
+    const [loading, setLoading] = useState(true);
+    
     useEffect(() => {
         if (user) {
             api.get(`/Categorias/GetByUsuario/${user.id}`, {
@@ -22,9 +23,19 @@ function Categorias() {
                     console.log(error)
                     setError(true);
                 })
+                .finally(() => {
+                    setLoading(false);
+                })
         }
     }, []);
 
+    if (loading && user) {
+        return (
+            <div style={{ minHeight: 'calc(100vh - 68px)' }} className="mt-[72px]">
+                <p className='text-4xl text-blue-500 text-center'>Carregando..</p>
+            </div>
+        )
+    }
     if (!user) {
         return (
             <div style={{ minHeight: 'calc(100vh - 68px)' }} className="mt-[72px]">

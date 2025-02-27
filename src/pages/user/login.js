@@ -1,8 +1,10 @@
 import { useState } from "react";
 import api from "../../services/axios";
 import { useUser } from "../../userContext";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+    const navigate = useNavigate();
     const { setUser } = useUser();
     const [erro, setErro] = useState(false);
     
@@ -20,9 +22,10 @@ function Login() {
             .then(function (response) {
                 setUser(response.data);
                 setErro(false);
+                navigate('/categorias')
             })
             .catch(function (error) {
-                console.log(error + '\n' + nomeDigitado, senhaDigitada);
+                console.log(error);
                 setErro(true);
             });
     }

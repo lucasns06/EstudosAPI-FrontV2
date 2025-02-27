@@ -94,7 +94,7 @@ const Header = () => {
                             </div>
                             {user && (
                                 <div className="py-6 flex flex-col gap-4">
-                                    <Link to="/Perfil" className="text-sm/6 font-semibold text-gray-900">
+                                    <Link to="/Perfil" className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
                                         Perfil
                                     </Link>
                                     <Link to="/Categorias" className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">

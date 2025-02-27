@@ -1,8 +1,17 @@
+import { useNavigate } from "react-router-dom";
 import { useUser } from "../../userContext"
 
 export default function Perfil() {
+    const navigate = useNavigate();
+    const { user, setUser } = useUser();
 
-    const { user } = useUser();
+    function Deslogar() {
+        navigate('/')
+
+        setTimeout(() => {
+            setUser(null);
+        }, 500)
+    }
 
     return (
         <div style={{ minHeight: 'calc(100vh - 68px)' }} className="mt-[72px] flex flex-col justify-center items-center">
@@ -15,10 +24,11 @@ export default function Perfil() {
                 <h2 className="font-bold">Data de acesso</h2>
                 <p>{user.dataAcesso}</p>
                 <br />
-                <div className="flex justify-between">
+                <button onClick={() => Deslogar()} className="bg-red-500 p-2 rounded-lg text-white shadow-xl hover:bg-red-600">Deslogar</button>
+                {/* <div className="flex justify-between">
                     <button className="bg-blue-500 p-2 rounded-lg text-white shadow-xl hover:bg-blue-600">Editar Perfil</button>
                     <button className="bg-red-500 p-2 rounded-lg text-white shadow-xl hover:bg-red-600">Deletar conta</button>
-                </div>
+                </div> */}
             </div>
         </div>
     )

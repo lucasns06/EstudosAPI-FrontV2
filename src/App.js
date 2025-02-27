@@ -12,8 +12,8 @@ import Perfil from "./pages/user/perfil";
 
 function App() {
   return (
-    <UserProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <UserProvider>
         <Header />
         <Routes>
           <Route path="/" element={<Hero />} />
@@ -24,8 +24,8 @@ function App() {
           <Route path="/Perfil" element={<Perfil />} />
         </Routes>
         <Footer />
-      </BrowserRouter>
-    </UserProvider>
+      </UserProvider>
+    </BrowserRouter>
   );
 }
 
