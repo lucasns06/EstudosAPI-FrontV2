@@ -12,8 +12,14 @@ function Categorias() {
     const [loading, setLoading] = useState(true);
     let [isOpen, setIsOpen] = useState(false);
     let [isOpenDelete, setIsOpenDelete] = useState(false);
+    let [isOpenEdit, setIsOpenEdit] = useState(false);
     const [errorCategory, setErrorCategory] = useState("");
+    const [nomeDigitadoEditar, setNomeDigitadoEditar] = useState("");
+    const [categoriaEditando, setCategoriaEditando] = useState(null);
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
+
     let nomeDigitado = "";
+
     useEffect(() => {
         if (user) {
             api.get(`/Categorias/GetByUsuario/${user.id}`, {
@@ -33,7 +39,7 @@ function Categorias() {
                     setLoading(false);
                 })
         }
-    },);
+    }, [user, refreshTrigger]);
 
     function CriarCategoria() {
         nomeDigitado = document.querySelector('.categoriaInput').value;
@@ -52,9 +58,12 @@ function Categorias() {
                 .then(function (response) {
                     setIsOpen(false);
                     setErrorCategory("");
+                    nomeDigitado = "";
+                    setRefreshTrigger(prev => prev + 1);
                 })
                 .catch(function (error) {
-
+                    nomeDigitado = "";
+                    setErrorCategory(error);
                 })
         }
     }
@@ -63,7 +72,34 @@ function Categorias() {
             headers: {
                 'Authorization': `Bearer ${user.token}`
             }
+        }).then(function () {
+            setRefreshTrigger(prev => prev + 1);
         })
+    }
+    function EditarCategoria() {
+        if (!categoriaEditando || categoriaEditando.nome.length < 5) {
+            setErrorCategory("O Nome tem que ter pelo menos 5 caracteres!");
+            return;
+        }
+        api.put(`/Categorias`,
+            {
+                id: categoriaEditando.id,
+                nome: categoriaEditando.nome,
+                usuarioId: user.id
+            },
+            {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            }
+        ).then(function (response) {
+            setIsOpenEdit(false);
+            setCategoriaEditando(null);
+            setRefreshTrigger(prev => prev + 1);
+        })
+            .catch(function (error) {
+                setErrorCategory(error);
+            })
     }
     if (loading && user) {
         return (
@@ -133,7 +169,7 @@ function Categorias() {
                             <PlusCircleIcon aria-hidden="true" className="size-6 text-green-500 cursor-pointer m-2" />
                         </div>
                         <div className="absolute flex gap-2 items-center top-2 right-2">
-                            <PencilIcon aria-hidden="true" className="size-6 text-white bg-blue-500 rounded-full p-[2px] cursor-pointer" />
+                            <PencilIcon onClick={() => { setIsOpenEdit(true); setCategoriaEditando(item); }} aria-hidden="true" className="size-6 text-white bg-blue-500 rounded-full p-[2px] cursor-pointer" />
                             <TrashIcon onClick={() => setIsOpenDelete(true)} aria-hidden="true" className="size-6 text-white bg-red-500 rounded-full p-[2px] cursor-pointer" />
                             <Dialog open={isOpenDelete} onClose={() => setIsOpenDelete(false)} className="relative z-50">
                                 <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
@@ -142,6 +178,20 @@ function Categorias() {
                                         <div className="flex gap-4 justify-between">
                                             <button onClick={() => [DeletarCategoria(item.id), setIsOpenDelete(false)]} className="bg-red-500 text-white p-2 rounded-xl hover:bg-red-600">SIM</button>
                                             <button onClick={() => setIsOpenDelete(false)} className="bg-blue-500 text-white p-2 rounded-xl hover:bg-blue-600">Não</button>
+                                        </div>
+                                    </DialogPanel>
+                                </div>
+                            </Dialog>
+                            <Dialog open={isOpenEdit} onClose={() => setIsOpenEdit(false)} className="relative z-50">
+                                <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
+                                    <DialogPanel className="max-w-lg space-y-4 border bg-white p-12 shadow-2xl">
+                                        <DialogTitle className="font-bold text-2xl text-center">Editar Categoria</DialogTitle>
+                                        <label className="block text-gray-700 text-sm font-bold">Nome</label>
+                                        <input value={categoriaEditando?.nome || ""} onChange={(e) => setCategoriaEditando({ ...categoriaEditando, nome: e.target.value })} onClick={() => setErrorCategory("")} className="categoriaInputEdit shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-500" type="text" placeholder="Nome da categoria" />
+                                        <p>{errorCategory}</p>
+                                        <div className="flex gap-4 justify-between">
+                                            <button onClick={() => EditarCategoria()} className="bg-green-500 text-white p-2 rounded-xl hover:bg-green-600">Editar</button>
+                                            <button onClick={() => setIsOpenEdit(false)} className="bg-red-500 text-white p-2 rounded-xl hover:bg-red-600">Cancelar</button>
                                         </div>
                                     </DialogPanel>
                                 </div>
