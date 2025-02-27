@@ -2,6 +2,7 @@ import { PencilIcon, PlusCircleIcon, TrashIcon } from '@heroicons/react/24/outli
 import api from '../../services/axios';
 import { useEffect, useState } from 'react';
 import { useUser } from '../../userContext';
+import LoadingCircle from '../../components/loading';
 function Categorias() {
     const [categorias, setCategorias] = useState([]);
     const [error, setError] = useState(false);
@@ -32,7 +33,7 @@ function Categorias() {
     if (loading && user) {
         return (
             <div style={{ minHeight: 'calc(100vh - 68px)' }} className="mt-[72px]">
-                <p className='text-4xl text-blue-500 text-center'>Carregando..</p>
+                <LoadingCircle />
             </div>
         )
     }
