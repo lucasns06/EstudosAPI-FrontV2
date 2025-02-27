@@ -14,7 +14,6 @@ function Categorias() {
     let [isOpenDelete, setIsOpenDelete] = useState(false);
     let [isOpenEdit, setIsOpenEdit] = useState(false);
     const [errorCategory, setErrorCategory] = useState("");
-    const [nomeDigitadoEditar, setNomeDigitadoEditar] = useState("");
     const [categoriaEditando, setCategoriaEditando] = useState(null);
     const [refreshTrigger, setRefreshTrigger] = useState(0);
 

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import api from "../../services/axios";
 import { useUser } from "../../userContext";
 import { useNavigate } from "react-router-dom";
+import api from "../../services/axios";
 
 function Login() {
     const navigate = useNavigate();
