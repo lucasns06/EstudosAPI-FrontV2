@@ -7,7 +7,7 @@ function Categorias() {
     const [error, setError] = useState(false);
     const { user } = useUser();
     const [loading, setLoading] = useState(true);
-    
+
     useEffect(() => {
         if (user) {
             api.get(`/Categorias/GetByUsuario/${user.id}`, {

@@ -10,9 +10,16 @@ export default function Perfil() {
 
         setTimeout(() => {
             setUser(null);
+            localStorage.removeItem('userData')
         }, 500)
     }
-
+    if (!user) {
+        return (
+            <div style={{ minHeight: 'calc(100vh - 68px)' }} className="mt-[72px]">
+                <p className='text-4xl text-red-500 text-center'>Você precisa estar logado..</p>
+            </div>
+        )
+    }
     return (
         <div style={{ minHeight: 'calc(100vh - 68px)' }} className="mt-[72px] flex flex-col justify-center items-center">
             <div className="text-left w-max m-auto shadow-xl p-10 rounded-xl">

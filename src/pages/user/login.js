@@ -22,6 +22,7 @@ function Login() {
             .then(function (response) {
                 setUser(response.data);
                 setErro(false);
+                localStorage.setItem("userData", JSON.stringify(response.data));
                 navigate('/categorias')
             })
             .catch(function (error) {
