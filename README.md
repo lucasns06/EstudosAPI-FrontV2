@@ -22,7 +22,6 @@ Permite um CRUD de categorias associadas a tarefas, com autenticação de usuár
 **Adicionar** <br/>
 **Editar** <br/>
 **Remover** <br/>
-**Associar a uma categoria**
 
 ## Usuarios
 
@@ -32,4 +31,4 @@ Permite um CRUD de categorias associadas a tarefas, com autenticação de usuár
 
 # ✅ Como rodar o projeto
 
-Entrar no [site do projeto]()
+Entrar no [site do projeto](https://estudosapi-lucasns06.vercel.app/)
