@@ -1,7 +1,7 @@
 # EstudosAPI-FrontV2
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/ff8d82ab-7438-4a51-b1d8-1bf1b9f2fc53">
+  <img src="https://github.com/user-attachments/assets/fa6d0542-a6ac-4cb2-b5e2-0aa2db0bfdaa">
 </p>
 
 # 📝 Descrição do projeto
