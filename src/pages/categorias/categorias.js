@@ -23,6 +23,8 @@ function Categorias() {
     let [isOpenEdit, setIsOpenEdit] = useState(false);
     let [isOpenTarefa, setIsOpenTarefa] = useState(false);
     let [EditTarefaOpen, setEditTarefaOpen] = useState(false);
+    let [isOpenDeleteTarefa, setIsOpenDeleteTarefa] = useState(false);
+    const [tarefaId, setTarefaId] = useState(null);
     const [tarefaEditando, setTarefaEditando] = useState(null);
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -36,10 +38,18 @@ function Categorias() {
         const buttonActiveSaved = localStorage.getItem('buttonActiveData');
         setButtonsActive(JSON.parse(buttonActiveSaved));
     }, [])
+
     function handleButtons() {
         const novoValor = !buttonsActive;
         setButtonsActive(novoValor);
         localStorage.setItem('buttonActiveData', JSON.stringify(novoValor));
+    }
+    function handleDateTime() {
+        const year = selectedDate.getFullYear();
+        const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2);
+        const day = ('0' + selectedDate.getDate()).slice(-2);
+        const formattedDate = `${day}-${month}-${year}`;
+        setDateTimeFor(formattedDate);
     }
     useEffect(() => {
         if (user) {
@@ -88,12 +98,39 @@ function Categorias() {
                 })
         }
     }
-    function handleDateTime() {
-        const year = selectedDate.getFullYear();
-        const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2);
-        const day = ('0' + selectedDate.getDate()).slice(-2);
-        const formattedDate = `${day}-${month}-${year}`;
-        setDateTimeFor(formattedDate);
+    function DeletarCategoria(id) {
+        api.delete(`/Categorias/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
+        }).then(function () {
+            setRefreshTrigger(prev => prev + 1);
+        })
+    }
+    function EditarCategoria() {
+        if (!categoriaEditando || categoriaEditando.nome.length < 5) {
+            setErrorCategory("O Nome tem que ter pelo menos 5 caracteres!");
+            return;
+        }
+        api.put(`/Categorias`,
+            {
+                id: categoriaEditando.id,
+                nome: categoriaEditando.nome,
+                usuarioId: user.id
+            },
+            {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            }
+        ).then(function (response) {
+            setIsOpenEdit(false);
+            setCategoriaEditando(null);
+            setRefreshTrigger(prev => prev + 1);
+        })
+            .catch(function (error) {
+                setErrorCategory("erro");
+            })
     }
 
     function CriarTarefa() {
@@ -150,42 +187,15 @@ function Categorias() {
             .catch(function (error) {
                 setErrorCategory("erro");
             })
-
     }
-
-    function DeletarCategoria(id) {
-        api.delete(`/Categorias/${id}`, {
+    function DeletarTarefa(id) {
+        api.delete(`/Tarefas/${id}`, {
             headers: {
                 'Authorization': `Bearer ${user.token}`
             }
         }).then(function () {
             setRefreshTrigger(prev => prev + 1);
         })
-    }
-    function EditarCategoria() {
-        if (!categoriaEditando || categoriaEditando.nome.length < 5) {
-            setErrorCategory("O Nome tem que ter pelo menos 5 caracteres!");
-            return;
-        }
-        api.put(`/Categorias`,
-            {
-                id: categoriaEditando.id,
-                nome: categoriaEditando.nome,
-                usuarioId: user.id
-            },
-            {
-                headers: {
-                    'Authorization': `Bearer ${user.token}`
-                }
-            }
-        ).then(function (response) {
-            setIsOpenEdit(false);
-            setCategoriaEditando(null);
-            setRefreshTrigger(prev => prev + 1);
-        })
-            .catch(function (error) {
-                setErrorCategory("erro");
-            })
     }
     if (loading && user) {
         return (
@@ -285,6 +295,17 @@ function Categorias() {
                     </DialogPanel>
                 </div>
             </Dialog>
+            <Dialog open={isOpenDeleteTarefa} onClose={() => setIsOpenDeleteTarefa(false)} className="relative z-50">
+                <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
+                    <DialogPanel className="max-w-lg space-y-4 border bg-white p-12 shadow-2xl">
+                        <DialogTitle className="font-bold text-2xl text-center">Tem certeza?</DialogTitle>
+                        <div className="flex gap-4 justify-between">
+                            <button onClick={() => [DeletarTarefa(tarefaId), setIsOpenDeleteTarefa(false)]} className="bg-red-500 text-white p-2 rounded-xl hover:bg-red-600">SIM</button>
+                            <button onClick={() => setIsOpenDeleteTarefa(false)} className="bg-blue-500 text-white p-2 rounded-xl hover:bg-blue-600">Não</button>
+                        </div>
+                    </DialogPanel>
+                </div>
+            </Dialog>
             <Dialog open={isOpenEdit} onClose={() => setIsOpenEdit(false)} className="relative z-50">
                 <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
                     <DialogPanel className="max-w-lg space-y-4 border bg-white p-12 shadow-2xl">
@@ -335,7 +356,7 @@ function Categorias() {
                         )}
                         <p className='text-red-500'>{errorCategory}</p>
                         <div className="flex gap-4 justify-between">
-                            <button onClick={() => { EditarTarefa();}} className="bg-green-500 text-white p-2 rounded-xl hover:bg-green-600">Editar</button>
+                            <button onClick={() => { EditarTarefa(); }} className="bg-green-500 text-white p-2 rounded-xl hover:bg-green-600">Editar</button>
                             <button onClick={() => { setEditTarefaOpen(false); setDateTimeFor(""); }} className="bg-red-500 text-white p-2 rounded-xl hover:bg-red-600">Cancelar</button>
                         </div>
                     </DialogPanel>
@@ -367,7 +388,7 @@ function Categorias() {
                                         setSelectedDate(new Date(item.dataTermino));
                                     }}
                                         aria-hidden="true" className="size-4 text-blue-500 cursor-pointer" />
-                                    <TrashIcon aria-hidden="true" className="size-4 text-red-500 cursor-pointer" />
+                                    <TrashIcon onClick={() => { setIsOpenDeleteTarefa(true); setTarefaId(item.id) }} aria-hidden="true" className="size-4 text-red-500 cursor-pointer" />
                                 </div>
                             </div>
                         ))}
