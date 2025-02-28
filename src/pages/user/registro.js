@@ -41,7 +41,7 @@ function Registro() {
 
     }
     return (
-        <div className="flex flex-col h-screen w-full justify-center items-center">
+        <><div className="flex flex-col h-screen w-full justify-center items-center">
             <h1 className="text-4xl font-bold mb-4">Criar Conta</h1>
             <div className="w-full max-w-xs">
                 <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -65,10 +65,10 @@ function Registro() {
                     </div>
                     <p className="text-red-500 text-center">{passwordError}</p>
                     <div className="flex flex-col items-center justify-center gap-4">
-                        <button type="button" onClick={() => Registrar()} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-blue-500 focus:shadow-outline" >
+                        <button type="button" onClick={() => Registrar()} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-blue-500 focus:shadow-outline">
                             Criar Conta
                         </button>
-                        <Link to="/Login" classNameName="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" >
+                        <Link to="/Login" classNameName="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
                             Já tem uma conta?
                         </Link>
                     </div>
@@ -78,7 +78,7 @@ function Registro() {
                                 <DialogTitle className="font-bold text-2xl text-center">Conta Criada</DialogTitle>
                                 <p>Agora você pode logar!</p>
                                 <div className="flex gap-4 justify-between">
-                                    <button onClick={() => { setIsOpen(false); navigate('/Login') }} className="bg-blue-500 text-white p-2 rounded-xl hover:bg-blue-600">Logar</button>
+                                    <button onClick={() => { setIsOpen(false); navigate('/Login'); } } className="bg-blue-500 text-white p-2 rounded-xl hover:bg-blue-600">Logar</button>
                                     <button onClick={() => setIsOpen(false)} className="bg-red-500 text-white p-2 rounded-xl hover:bg-red-600">Fechar</button>
                                 </div>
                             </DialogPanel>
@@ -86,7 +86,14 @@ function Registro() {
                     </Dialog>
                 </form>
             </div>
-        </div>
+        </div><div className='flex flex-col items-center gap-2 py-4'>
+                <h1 className='text-4xl text-center font-bold'>Não quer se cadastrar?</h1>
+                <p className='text-2xl text-center'>
+                    Experimente o gerenciamento de tarefas no Playground!
+                </p>
+                <br />
+                <a href="/Playground" className='rounded-md shadow-xl bg-blue-500 px-3.5 py-2.5 text-sm font-semibold text-white hover:bg-blue-400 focus-visible:outline-indigo-600'>Playground</a>
+            </div></>
     );
 }
 export default Registro;

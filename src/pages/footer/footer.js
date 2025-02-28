@@ -1,7 +1,7 @@
 function Footer() {
 
     return (
-        <footer class="bg-white shadow-xl">
+        <footer class="bg-white shadow-xl border-t-2 mt-12">
             <div class="mx-auto w-full  p-4 py-6 lg:px-8">
                 <div class="md:flex md:justify-between">
                     <div class="mb-6 md:mb-0">
