@@ -10,8 +10,8 @@ function ModalDatePicker({ isOpen, onClose, selectedDate, onChange }) {
   return (
     <Dialog open={isOpen} onClose={onClose} className="relative z-50">
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <DialogPanel className="max-w-lg bg-white p-6 shadow-2xl">
-          <DialogTitle className="font-bold text-2xl mb-4">
+        <DialogPanel className="max-w-lg bg-white p-6 shadow-2xl flex flex-col items-center justify-center">
+          <DialogTitle className="font-bold text-2xl mb-4 text-center">
             Selecione a Data de Término
           </DialogTitle>
           <DatePicker
