@@ -241,6 +241,11 @@ function Categorias() {
                     </div>
                 </Dialog>
             </header>
+            {!categorias.length && (
+                <div style={{ minHeight: 'calc(100vh - 128px)' }} className='flex flex-col justify-center items-center'>
+                    <p className='text-5xl text-center'>Adicione uma categoria!</p>
+                </div>
+            )}
             <Dialog open={isOpenTarefa} onClose={() => { setIsOpenTarefa(false); setDateTimeFor(""); setPrioridade(0); }} className="relative z-50">
                 <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
                     <DialogPanel className="max-w-lg space-y-4 border bg-white p-12 shadow-2xl">
@@ -365,40 +370,42 @@ function Categorias() {
             <div className="flex flex-wrap justify-center items-start">
                 {categorias.map((item) => (
                     <div key={item.id} className="p-4 shadow-lg m-2 w-full max-w-none min-h-32 relative sm:max-w-96">
-                        <h1 className="font-bold text-xl mb-2">{item.nome}</h1>
+                        <div className='flex justify-between'>
+                            <h1 className="font-bold text-xl mb-2">{item.nome}</h1>
+                            <div className={`${buttonsActive ? "hidden" : "flex"} gap-2 items-center`}>
+                                <PlusCircleIcon onClick={() => { setIsOpenTarefa(true); setCategoriaId(item.id); setCategoriaSelecionada(item.nome); }} aria-hidden="true" className="size-6 text-green-500 cursor-pointer m-2" />
+                                <PencilIcon onClick={() => { setIsOpenEdit(true); setCategoriaEditando(item); }} aria-hidden="true" className="size-6 text-blue-500 cursor-pointer" />
+                                <TrashIcon onClick={() => { setIsOpenDelete(true); setCategoriaId(item.id) }} aria-hidden="true" className="size-6 text-red-500 cursor-pointer" />
+                            </div>
+                        </div>
                         {item.tarefas.map((item) => (
-                            <div key={item.id} className="mb-4 relative">
-                                {item.prioridade == 0 && (
-                                    <p>Baixa</p>
-                                )}
-                                {item.prioridade == 1 && (
-                                    <p className="text-blue-500">Media</p>
-                                )}
-                                {item.prioridade == 2 && (
-                                    <p className="text-red-500">Alta</p>
-                                )}
+                            <div key={item.id} className="mb-4 relative border-b p-2 hover:bg-gray-100">
+                                <div className='flex justify-between'>
+                                    {item.prioridade == 0 && (
+                                        <p>Baixa</p>
+                                    )}
+                                    {item.prioridade == 1 && (
+                                        <p className="text-blue-500">Media</p>
+                                    )}
+                                    {item.prioridade == 2 && (
+                                        <p className="text-red-500">Alta</p>
+                                    )}
+                                    <div className={`${buttonsActive ? "hidden" : "flex"} gap-2 items-center`}>
+                                        <PencilIcon onClick={() => {
+                                            setEditTarefaOpen(true);
+                                            setTarefaEditando(item);
+                                            setPrioridade(item.prioridade);
+                                            setDateTimeFor(item.dataTermino);
+                                            setSelectedDate(new Date(item.dataTermino));
+                                        }}
+                                            aria-hidden="true" className="size-4 text-blue-500 cursor-pointer" />
+                                        <TrashIcon onClick={() => { setIsOpenDeleteTarefa(true); setTarefaId(item.id) }} aria-hidden="true" className="size-4 text-red-500 cursor-pointer" />
+                                    </div>
+                                </div>
                                 <p>{item.nome}</p>
                                 <p>Término: <span className="rounded-full">{item.dataTermino}</span></p>
-                                <div className={`${buttonsActive ? "hidden" : "flex"} gap-2 items-center absolute bottom-2 right-2`}>
-                                    <PencilIcon onClick={() => {
-                                        setEditTarefaOpen(true);
-                                        setTarefaEditando(item);
-                                        setPrioridade(item.prioridade);
-                                        setDateTimeFor(item.dataTermino);
-                                        setSelectedDate(new Date(item.dataTermino));
-                                    }}
-                                        aria-hidden="true" className="size-4 text-blue-500 cursor-pointer" />
-                                    <TrashIcon onClick={() => { setIsOpenDeleteTarefa(true); setTarefaId(item.id) }} aria-hidden="true" className="size-4 text-red-500 cursor-pointer" />
-                                </div>
                             </div>
                         ))}
-                        <div className='border-t-2'>
-                            <PlusCircleIcon onClick={() => { setIsOpenTarefa(true); setCategoriaId(item.id); setCategoriaSelecionada(item.nome); }} aria-hidden="true" className="size-6 text-green-500 cursor-pointer m-2" />
-                        </div>
-                        <div className={`${buttonsActive ? "hidden" : "flex"} absolute gap-2 items-center top-2 right-2`}>
-                            <PencilIcon onClick={() => { setIsOpenEdit(true); setCategoriaEditando(item); }} aria-hidden="true" className="size-6 text-white bg-blue-500 rounded-full p-[2px] cursor-pointer" />
-                            <TrashIcon onClick={() => { setIsOpenDelete(true); setCategoriaId(item.id) }} aria-hidden="true" className="size-6 text-white bg-red-500 rounded-full p-[2px] cursor-pointer" />
-                        </div>
                     </div>
                 ))}
             </div>

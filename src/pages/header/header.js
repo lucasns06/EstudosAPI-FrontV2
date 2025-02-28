@@ -67,6 +67,9 @@ const Header = () => {
                             <Link to="/Sobre" className="text-sm/6 font-semibold text-gray-900">
                                 Sobre Nós
                             </Link>
+                            <Link to="/Playground" className="text-sm/6 font-semibold text-gray-900">
+                                Playground
+                            </Link>
                         </div>
                         <div className="hidden lg:flex lg:flex-1 lg:justify-end items-center gap-4">
                             <Link to="/Registrar" className="text-sm/6 font-semibold text-gray-900">

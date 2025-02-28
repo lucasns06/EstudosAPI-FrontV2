@@ -9,6 +9,7 @@ import Categorias from "./pages/categorias/categorias";
 import { UserProvider } from "./userContext";
 import api from "./services/axios";
 import Perfil from "./pages/user/perfil";
+import Playground from "./pages/playground/Playground";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/Sobre" element={<Sobre />} />
           <Route path="/Categorias" element={<Categorias />} />
           <Route path="/Perfil" element={<Perfil />} />
+          <Route path="/Playground" element={<Playground />} />
         </Routes>
         <Footer />
       </UserProvider>

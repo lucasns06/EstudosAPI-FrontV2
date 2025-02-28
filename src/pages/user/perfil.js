@@ -24,12 +24,11 @@ export default function Perfil() {
         <div style={{ minHeight: 'calc(100vh - 68px)' }} className="mt-[72px] flex flex-col justify-center items-center">
             <div className="text-left w-max m-auto shadow-xl p-10 rounded-xl">
                 <h1 className="text-4xl text-center">Perfil</h1>
+                <br />
                 <h2 className="font-bold">Nome</h2>
                 <p>{user.username}</p>
-                <h2 className="font-bold">Email</h2>
-                <p>{user.email}</p>
                 <h2 className="font-bold">Data de acesso</h2>
-                <p>{user.dataAcesso}</p>
+                <p className="max-w-[82px] overflow-hidden text-nowrap">{user.dataAcesso}</p>
                 <br />
                 <button onClick={() => Deslogar()} className="bg-red-500 p-2 rounded-lg text-white shadow-xl hover:bg-red-600">Deslogar</button>
                 {/* <div className="flex justify-between">
