@@ -55,7 +55,7 @@ function Hero() {
                         <div className="mt-10 flex items-center justify-center gap-x-6">
                             <Link
                                 to="/Registrar"
-                                className="rounded-md shadow-xl bg-blue-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                className="rounded-md shadow-xl bg-blue-500 px-3.5 py-2.5 text-sm font-semibold text-white hover:bg-blue-400 focus-visible:outline-indigo-600"
                             >
                                 Começar
                             </Link>
@@ -80,7 +80,9 @@ function Hero() {
                     />
                 </div>
             </div>
-            <div className="bg-white h-screen flex items-center">
+            <div className="bg-white h-screen flex items-center relative">
+                <div className='absolute w-full h-3 blur-xl bg-blue-500 top-0'></div>
+                <div className='absolute w-full h-1 bg-blue-500 top-0'></div>
                 <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <div className="mx-auto max-w-2xl lg:text-center">
                         <h2 className="text-base/7 font-semibold text-indigo-600">Gerencie seus estudos</h2>
@@ -107,6 +109,14 @@ function Hero() {
                         </dl>
                     </div>
                 </div>
+            </div>
+            <div className='flex flex-col items-center gap-2 py-4'>
+                <h1 className='text-4xl text-center font-bold'>Não quer criar uma conta?</h1>
+                <p className='text-2xl text-center'>
+                    Você pode testar o gerenciamento de tarefas pelo playground!
+                </p>
+                <br/>
+                <a href="/Playground" className='rounded-md shadow-xl bg-blue-500 px-3.5 py-2.5 text-sm font-semibold text-white hover:bg-blue-400 focus-visible:outline-indigo-600'>Playground</a>
             </div>
         </div>
     );
