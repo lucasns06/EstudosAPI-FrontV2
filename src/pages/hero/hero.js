@@ -1,5 +1,7 @@
 import { ArrowPathIcon, CloudArrowUpIcon, FingerPrintIcon, LockClosedIcon } from '@heroicons/react/24/outline'
+import Lottie from 'lottie-react';
 import { Link } from 'react-router-dom';
+import studyAnima from '../../animations/studyAnima.json'
 function Hero() {
     const features = [
         {
@@ -29,7 +31,7 @@ function Hero() {
     ]
     return (
         <div className="App">
-            <div className="relative isolate px-6 pt-14 lg:px-8">
+            <div className="h-screen flex flex-col justify-center isolate px-6 lg:px-8">
                 <div
                     aria-hidden="true"
                     className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -42,7 +44,7 @@ function Hero() {
                         className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#6b9aff] to-[#2549b8] opacity-10 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
                     />
                 </div>
-                <div className="mx-auto py-32 flex flex-col items-center justify-center gap-4 lg:flex-row">
+                <div className="mx-auto flex flex-col items-center justify-center gap-4 lg:flex-row">
                     <div className="text-center">
                         <h1 className="text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
                             Organize seus estudos
@@ -53,13 +55,17 @@ function Hero() {
                         <div className="mt-10 flex items-center justify-center gap-x-6">
                             <Link
                                 to="/Registrar"
-                                className="rounded-md bg-blue-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                className="rounded-md shadow-xl bg-blue-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
                                 Começar
                             </Link>
                         </div>
                     </div>
-                    <img src="study.png" />
+                    {/* <img src="study.png" /> */}
+                    <Lottie 
+                        animationData={studyAnima}
+                        loop={true}
+                    />
                 </div>
                 <div
                     aria-hidden="true"
