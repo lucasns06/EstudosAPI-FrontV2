@@ -403,7 +403,7 @@ function Categorias() {
                                     </div>
                                 </div>
                                 <p>{item.nome}</p>
-                                <p>Término: <span className="rounded-full">{item.dataTermino}</span></p>
+                                <p className='text-gray-600'>{item.dataTermino}</p>
                             </div>
                         ))}
                     </div>
