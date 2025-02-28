@@ -82,7 +82,7 @@ function Hero() {
     }, { scope: tituloSecond })
     return (
         <div className="App">
-            <div className="h-screen flex flex-col justify-center isolate px-6 lg:px-8">
+            <div className="min-h-screen flex flex-col justify-center isolate px-6 lg:px-8">
                 <div
                     aria-hidden="true"
                     className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -95,7 +95,7 @@ function Hero() {
                         className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#6b9aff] to-[#2549b8] opacity-10 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
                     />
                 </div>
-                <div ref={tituloFirst} className="mx-auto flex flex-col items-center justify-center gap-4 lg:flex-row">
+                <div ref={tituloFirst} className="mx-auto flex flex-col-reverse items-center justify-center gap-4 lg:flex-row">
                     <div className="text-center">
                         <h1 className="animaHeroFirst text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
                             Organize seus estudos
@@ -133,7 +133,7 @@ function Hero() {
                 </div>
             </div>
             <div ref={tituloSecond} >
-                <div className="bg-white h-screen flex items-center relative">
+                <div className="bg-white min-h-screen flex items-center relative">
                     <div className='absolute w-full h-3 blur-xl bg-blue-500 top-0'></div>
                     <div className='absolute w-full h-1 blur-sm bg-blue-500 top-0'></div>
                     <div className="mx-auto max-w-7xl px-6 lg:px-8">
