@@ -1,11 +1,30 @@
-function Sobre() {
+import { useGSAP } from "@gsap/react";
+import { useRef } from "react";
+import gsap from 'gsap';
 
+function Sobre() {
+    const aboutPage = useRef();
+    useGSAP(() => {
+        gsap.fromTo('.animaAbout', {
+            opacity: 0,
+            y: -50
+        },
+            {
+                opacity: 1,
+                y: 0,
+                stagger: 0.8,
+                duration: 0.5,
+            });
+    }, { scope: aboutPage })
     return (
-        <div className="h-screen w-full flex flex-col justify-center items-center gap-4 px-5">
-            <h1 className="text-center text-3xl sm:text-6xl">
+        <div ref={aboutPage} className="h-screen w-full flex flex-col justify-center items-center gap-8 px-5">
+            <h1 className="animaAbout text-center text-3xl sm:text-6xl">
                 Criado Por <span className="text-blue-500">Lucas Nascimento</span>
             </h1>
-            <img className="rounded-full border-4 border-blue-500" src="https://avatars.githubusercontent.com/u/170823502?v=4" />
+            <a className="rounded-full" href="https://github.com/lucasns06" target="_blank" rel="noopener noreferrer">
+                <img className="animaAbout rounded-full border-4 border-blue-500 hover:border-blue-600" src="https://avatars.githubusercontent.com/u/170823502?v=4" />
+            </a>
+            <h1 className="animaAbout text-2xl">Gostou do site? veja o meu <a className="text-blue-500 font-bold" href="https://lucasns06.github.io/portfolio/" target="_blank" rel="noopener noreferrer">Portfolio</a></h1>
         </div>
     );
 }
