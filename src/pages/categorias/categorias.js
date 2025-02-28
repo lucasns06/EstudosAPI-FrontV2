@@ -13,12 +13,15 @@ function Categorias() {
     let [isOpen, setIsOpen] = useState(false);
     let [isOpenDelete, setIsOpenDelete] = useState(false);
     let [isOpenEdit, setIsOpenEdit] = useState(false);
+    let [isOpenTarefa, setIsOpenTarefa] = useState(false);
     const [errorCategory, setErrorCategory] = useState("");
     const [categoriaEditando, setCategoriaEditando] = useState(null);
     const [refreshTrigger, setRefreshTrigger] = useState(0);
+    const [categoriaId, setCategoriaId] = useState(null);
+    const [categoriaSelecionada, setCategoriaSelecionada] = useState(null);
 
     let nomeDigitado = "";
-
+    let nomeDigitadoTarefa = "";
     useEffect(() => {
         if (user) {
             api.get(`/Categorias/GetByUsuario/${user.id}`, {
@@ -66,6 +69,35 @@ function Categorias() {
                 })
         }
     }
+    /* 
+          "id": 9,
+                "nome": "RpgApi",
+                "dataTermino": "2025-12-12T00:00:00",
+                "prioridade": 2,
+                "completo": true,
+                "categoriaId": 3
+    */
+    function CriarTarefa() {
+        nomeDigitadoTarefa = document.querySelector('.tarefaInput').value;
+        
+        if (nomeDigitadoTarefa.trim().length < 5) {
+            setErrorCategory("O Nome tem que ter pelo menos 5 caracteres!");
+            return
+        } 
+        console.log(nomeDigitadoTarefa);
+        /*
+        api.post('Tarefas',{
+            nome: "",
+            categoriaId: categoriaId
+
+        }).then(function (response) {
+
+        }).catch(function (error) {
+
+        })
+        */
+    }
+
     function DeletarCategoria(id) {
         api.delete(`/Categorias/${id}`, {
             headers: {
@@ -141,6 +173,46 @@ function Categorias() {
                     </div>
                 </Dialog>
             </header>
+            <Dialog open={isOpenTarefa} onClose={() => setIsOpenTarefa(false)} className="relative z-50">
+                <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
+                    <DialogPanel className="max-w-lg space-y-4 border bg-white p-12 shadow-2xl">
+                        <DialogTitle className="font-bold text-2xl text-center">Criar Tarefa</DialogTitle>
+                        <p>Categoria: {categoriaSelecionada}</p>
+                        <label className="block text-gray-700 text-sm font-bold">Nome</label>
+                        <input onClick={() => setErrorCategory("")} className="tarefaInput shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-500" type="text" placeholder="Nome da tarefa" />
+                        <p className='text-red-500'>{errorCategory}</p>
+                        <div className="flex gap-4 justify-between">
+                            <button onClick={() => CriarTarefa()} className="bg-green-500 text-white p-2 rounded-xl hover:bg-green-600">Criar</button>
+                            <button onClick={() => setIsOpenTarefa(false)} className="bg-red-500 text-white p-2 rounded-xl hover:bg-red-600">Cancelar</button>
+                        </div>
+                    </DialogPanel>
+                </div>
+            </Dialog>
+            <Dialog open={isOpenDelete} onClose={() => setIsOpenDelete(false)} className="relative z-50">
+                <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
+                    <DialogPanel className="max-w-lg space-y-4 border bg-white p-12 shadow-2xl">
+                        <DialogTitle className="font-bold text-2xl text-center">Tem certeza?</DialogTitle>
+                        <div className="flex gap-4 justify-between">
+                            <button onClick={() => [DeletarCategoria(categoriaId), setIsOpenDelete(false)]} className="bg-red-500 text-white p-2 rounded-xl hover:bg-red-600">SIM</button>
+                            <button onClick={() => setIsOpenDelete(false)} className="bg-blue-500 text-white p-2 rounded-xl hover:bg-blue-600">Não</button>
+                        </div>
+                    </DialogPanel>
+                </div>
+            </Dialog>
+            <Dialog open={isOpenEdit} onClose={() => setIsOpenEdit(false)} className="relative z-50">
+                <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
+                    <DialogPanel className="max-w-lg space-y-4 border bg-white p-12 shadow-2xl">
+                        <DialogTitle className="font-bold text-2xl text-center">Editar Categoria</DialogTitle>
+                        <label className="block text-gray-700 text-sm font-bold">Nome</label>
+                        <input value={categoriaEditando?.nome || ""} onChange={(e) => setCategoriaEditando({ ...categoriaEditando, nome: e.target.value })} onClick={() => setErrorCategory("")} className="categoriaInputEdit shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-500" type="text" placeholder="Nome da categoria" />
+                        <p>{errorCategory}</p>
+                        <div className="flex gap-4 justify-between">
+                            <button onClick={() => EditarCategoria()} className="bg-green-500 text-white p-2 rounded-xl hover:bg-green-600">Editar</button>
+                            <button onClick={() => setIsOpenEdit(false)} className="bg-red-500 text-white p-2 rounded-xl hover:bg-red-600">Cancelar</button>
+                        </div>
+                    </DialogPanel>
+                </div>
+            </Dialog>
             <div className="flex justify-center items-start flex-wrap mt-4">
                 {categorias.map((item) => (
                     <div key={item.id} className="p-4 shadow-lg m-2 w-full max-w-none min-h-32 relative sm:max-w-96">
@@ -165,36 +237,11 @@ function Categorias() {
                             </div>
                         ))}
                         <div className='border-t-2'>
-                            <PlusCircleIcon aria-hidden="true" className="size-6 text-green-500 cursor-pointer m-2" />
+                            <PlusCircleIcon onClick={() => {setIsOpenTarefa(true); setCategoriaId(item.id); setCategoriaSelecionada(item.nome);}} aria-hidden="true" className="size-6 text-green-500 cursor-pointer m-2" />
                         </div>
                         <div className="absolute flex gap-2 items-center top-2 right-2">
                             <PencilIcon onClick={() => { setIsOpenEdit(true); setCategoriaEditando(item); }} aria-hidden="true" className="size-6 text-white bg-blue-500 rounded-full p-[2px] cursor-pointer" />
-                            <TrashIcon onClick={() => setIsOpenDelete(true)} aria-hidden="true" className="size-6 text-white bg-red-500 rounded-full p-[2px] cursor-pointer" />
-                            <Dialog open={isOpenDelete} onClose={() => setIsOpenDelete(false)} className="relative z-50">
-                                <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-                                    <DialogPanel className="max-w-lg space-y-4 border bg-white p-12 shadow-2xl">
-                                        <DialogTitle className="font-bold text-2xl text-center">Tem certeza?</DialogTitle>
-                                        <div className="flex gap-4 justify-between">
-                                            <button onClick={() => [DeletarCategoria(item.id), setIsOpenDelete(false)]} className="bg-red-500 text-white p-2 rounded-xl hover:bg-red-600">SIM</button>
-                                            <button onClick={() => setIsOpenDelete(false)} className="bg-blue-500 text-white p-2 rounded-xl hover:bg-blue-600">Não</button>
-                                        </div>
-                                    </DialogPanel>
-                                </div>
-                            </Dialog>
-                            <Dialog open={isOpenEdit} onClose={() => setIsOpenEdit(false)} className="relative z-50">
-                                <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-                                    <DialogPanel className="max-w-lg space-y-4 border bg-white p-12 shadow-2xl">
-                                        <DialogTitle className="font-bold text-2xl text-center">Editar Categoria</DialogTitle>
-                                        <label className="block text-gray-700 text-sm font-bold">Nome</label>
-                                        <input value={categoriaEditando?.nome || ""} onChange={(e) => setCategoriaEditando({ ...categoriaEditando, nome: e.target.value })} onClick={() => setErrorCategory("")} className="categoriaInputEdit shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-500" type="text" placeholder="Nome da categoria" />
-                                        <p>{errorCategory}</p>
-                                        <div className="flex gap-4 justify-between">
-                                            <button onClick={() => EditarCategoria()} className="bg-green-500 text-white p-2 rounded-xl hover:bg-green-600">Editar</button>
-                                            <button onClick={() => setIsOpenEdit(false)} className="bg-red-500 text-white p-2 rounded-xl hover:bg-red-600">Cancelar</button>
-                                        </div>
-                                    </DialogPanel>
-                                </div>
-                            </Dialog>
+                            <TrashIcon onClick={() => { setIsOpenDelete(true); setCategoriaId(item.id) }} aria-hidden="true" className="size-6 text-white bg-red-500 rounded-full p-[2px] cursor-pointer" />
                         </div>
                     </div>
                 ))}

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../services/axios";
 import { useState } from "react";
-import { Description, Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
+import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 
 function Registro() {
     const [passwordError, setPasswordError] = useState("");
@@ -15,12 +15,12 @@ function Registro() {
         senhaRegister = document.querySelector('.senhaRegister').value;
         senhaConfirmRegister = document.querySelector('.senhaConfirmRegister').value;
 
-        if (senhaRegister.length == 0 && nomeRegister.length == 0 && senhaConfirmRegister.length == 0) {
+        if (senhaRegister.length === 0 && nomeRegister.length === 0 && senhaConfirmRegister.length === 0) {
             setPasswordError("Formulario vazio.");
             return
         }
 
-        if (senhaRegister != senhaConfirmRegister) {
+        if (senhaRegister !== senhaConfirmRegister) {
             setPasswordError("As senhas são diferentes.");
             return
         }
