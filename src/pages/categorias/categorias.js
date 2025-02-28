@@ -1,5 +1,5 @@
 import { PencilIcon, PlusCircleIcon, TrashIcon } from '@heroicons/react/24/outline';
-import { Description, Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
+import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 import api from '../../services/axios';
 import { useEffect, useState } from 'react';
 import { useUser } from '../../userContext';
@@ -7,19 +7,22 @@ import LoadingCircle from '../../components/loading';
 import ModalDatePicker from '../../components/ModalDatePicker'
 
 function Categorias() {
-    const [categorias, setCategorias] = useState([]);
-    const [error, setError] = useState(false);
+    const buttonActiveSaved = localStorage.getItem('buttonActiveData');
     const { user } = useUser();
+    const [error, setError] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
+    const [buttonsActive, setButtonsActive] = useState(buttonActiveSaved);
+
+    const [categorias, setCategorias] = useState([]);
+    const [categoriaId, setCategoriaId] = useState(null);
+    const [categoriaSelecionada, setCategoriaSelecionada] = useState(null);
+    const [errorCategory, setErrorCategory] = useState("");
+    const [categoriaEditando, setCategoriaEditando] = useState(null);
     let [isOpen, setIsOpen] = useState(false);
     let [isOpenDelete, setIsOpenDelete] = useState(false);
     let [isOpenEdit, setIsOpenEdit] = useState(false);
     let [isOpenTarefa, setIsOpenTarefa] = useState(false);
-    const [errorCategory, setErrorCategory] = useState("");
-    const [categoriaEditando, setCategoriaEditando] = useState(null);
-    const [refreshTrigger, setRefreshTrigger] = useState(0);
-    const [categoriaId, setCategoriaId] = useState(null);
-    const [categoriaSelecionada, setCategoriaSelecionada] = useState(null);
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [DateTimeFor, setDateTimeFor] = useState("");
@@ -27,6 +30,11 @@ function Categorias() {
 
     let nomeDigitado = "";
     let nomeDigitadoTarefa = "";
+
+    useEffect(() => {
+        localStorage.setItem('buttonActiveData', buttonsActive);
+    }, [buttonsActive])
+
     useEffect(() => {
         if (user) {
             api.get(`/Categorias/GetByUsuario/${user.id}`, {
@@ -74,14 +82,6 @@ function Categorias() {
                 })
         }
     }
-    /* 
-          "id": 9,
-                "nome": "RpgApi",
-                "dataTermino": "2025-12-12T00:00:00",
-                "prioridade": 2,
-                "completo": true,
-                "categoriaId": 3
-    */
     function handleDateTime() {
         const year = selectedDate.getFullYear();
         const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2);
@@ -111,6 +111,7 @@ function Categorias() {
                 }
             }).then(function (response) {
                 setIsOpenTarefa(false);
+                setRefreshTrigger(prev => prev + 1);
             }).catch(function (error) {
                 setErrorCategory("Erro");
             })
@@ -176,7 +177,10 @@ function Categorias() {
     return (
         <div style={{ minHeight: 'calc(100vh - 68px)' }} className="mt-[72px]">
             <header className="flex items-center justify-center py-2 bg-white shadow-sm">
-                <button onClick={() => setIsOpen(true)} className="bg-green-500 text-white p-2 rounded-xl shadow-sm hover:bg-green-400">Criar Categoria</button>
+                <div className='flex gap-2'>
+                    <button onClick={() => setIsOpen(true)} className="bg-green-500 text-white p-2 rounded-xl shadow-sm hover:bg-green-400">Criar Categoria</button>
+                    <button onClick={() => { setButtonsActive(prevState => !prevState) }} className="bg-gray-500 text-white p-2 rounded-xl shadow-sm hover:bg-gray-400">{buttonsActive ? 'Mostrar Botões' : 'Esconder Botões'}</button>
+                </div>
                 <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50">
                     <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
                         <DialogPanel className="max-w-lg space-y-4 border bg-white p-12 shadow-2xl">
@@ -260,7 +264,7 @@ function Categorias() {
                     </DialogPanel>
                 </div>
             </Dialog>
-            <div className="flex justify-center items-start flex-wrap mt-4">
+            <div className="flex flex-wrap justify-center items-start">
                 {categorias.map((item) => (
                     <div key={item.id} className="p-4 shadow-lg m-2 w-full max-w-none min-h-32 relative sm:max-w-96">
                         <h1 className="font-bold text-xl mb-2">{item.nome}</h1>
@@ -277,7 +281,7 @@ function Categorias() {
                                 )}
                                 <p>{item.nome}</p>
                                 <p>Término: <span className="rounded-full">{item.dataTermino}</span></p>
-                                <div className='flex gap-2 items-center absolute top-2 right-2'>
+                                <div className={`${buttonsActive ? "hidden" : "flex"} gap-2 items-center absolute bottom-2 right-2`}>
                                     <PencilIcon aria-hidden="true" className="size-4 text-blue-500 cursor-pointer" />
                                     <TrashIcon aria-hidden="true" className="size-4 text-red-500 cursor-pointer" />
                                 </div>
@@ -286,7 +290,7 @@ function Categorias() {
                         <div className='border-t-2'>
                             <PlusCircleIcon onClick={() => { setIsOpenTarefa(true); setCategoriaId(item.id); setCategoriaSelecionada(item.nome); }} aria-hidden="true" className="size-6 text-green-500 cursor-pointer m-2" />
                         </div>
-                        <div className="absolute flex gap-2 items-center top-2 right-2">
+                        <div className={`${buttonsActive ? "hidden" : "flex"} absolute gap-2 items-center top-2 right-2`}>
                             <PencilIcon onClick={() => { setIsOpenEdit(true); setCategoriaEditando(item); }} aria-hidden="true" className="size-6 text-white bg-blue-500 rounded-full p-[2px] cursor-pointer" />
                             <TrashIcon onClick={() => { setIsOpenDelete(true); setCategoriaId(item.id) }} aria-hidden="true" className="size-6 text-white bg-red-500 rounded-full p-[2px] cursor-pointer" />
                         </div>
