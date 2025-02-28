@@ -4,6 +4,7 @@ import api from '../../services/axios';
 import { useEffect, useState } from 'react';
 import { useUser } from '../../userContext';
 import LoadingCircle from '../../components/loading';
+import ModalDatePicker from '../../components/ModalDatePicker'
 
 function Categorias() {
     const [categorias, setCategorias] = useState([]);
@@ -19,6 +20,10 @@ function Categorias() {
     const [refreshTrigger, setRefreshTrigger] = useState(0);
     const [categoriaId, setCategoriaId] = useState(null);
     const [categoriaSelecionada, setCategoriaSelecionada] = useState(null);
+    const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [DateTimeFor, setDateTimeFor] = useState("");
+    const [prioridade, setPrioridade] = useState(0);
 
     let nomeDigitado = "";
     let nomeDigitadoTarefa = "";
@@ -77,25 +82,39 @@ function Categorias() {
                 "completo": true,
                 "categoriaId": 3
     */
+    function handleDateTime() {
+        const year = selectedDate.getFullYear();
+        const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2);
+        const day = ('0' + selectedDate.getDate()).slice(-2);
+        const formattedDate = `${day}-${month}-${year}`;
+        setDateTimeFor(formattedDate);
+    }
+
     function CriarTarefa() {
         nomeDigitadoTarefa = document.querySelector('.tarefaInput').value;
-        
-        if (nomeDigitadoTarefa.trim().length < 5) {
-            setErrorCategory("O Nome tem que ter pelo menos 5 caracteres!");
+
+        if (nomeDigitadoTarefa.trim().length == 0) {
+            setErrorCategory("O Nome não pode estar vazio!");
             return
-        } 
-        console.log(nomeDigitadoTarefa);
-        /*
-        api.post('Tarefas',{
-            nome: "",
-            categoriaId: categoriaId
+        }
 
-        }).then(function (response) {
+        api.post('Tarefas', {
+            nome: nomeDigitadoTarefa,
+            dataTermino: DateTimeFor,
+            prioridade: prioridade,
+            categoriaId: categoriaId,
 
-        }).catch(function (error) {
+        },
+            {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            }).then(function (response) {
+                setIsOpenTarefa(false);
+            }).catch(function (error) {
+                setErrorCategory("Erro");
+            })
 
-        })
-        */
     }
 
     function DeletarCategoria(id) {
@@ -173,17 +192,45 @@ function Categorias() {
                     </div>
                 </Dialog>
             </header>
-            <Dialog open={isOpenTarefa} onClose={() => setIsOpenTarefa(false)} className="relative z-50">
+            <Dialog open={isOpenTarefa} onClose={() => { setIsOpenTarefa(false); setDateTimeFor(""); setPrioridade(0); }} className="relative z-50">
                 <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
                     <DialogPanel className="max-w-lg space-y-4 border bg-white p-12 shadow-2xl">
                         <DialogTitle className="font-bold text-2xl text-center">Criar Tarefa</DialogTitle>
-                        <p>Categoria: {categoriaSelecionada}</p>
+                        <p >Categoria Selecionada: <span className='font-bold'>{categoriaSelecionada}</span></p>
                         <label className="block text-gray-700 text-sm font-bold">Nome</label>
                         <input onClick={() => setErrorCategory("")} className="tarefaInput shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-500" type="text" placeholder="Nome da tarefa" />
+                        <button
+                            onClick={() => setIsDatePickerOpen(true)}
+                            className="bg-gray-500 text-white p-2 rounded hover:bg-gray-600"
+                        >
+                            Selecionar Data de Término
+                        </button>
+                        <p>Data de Término: {DateTimeFor}</p>
+                        <ModalDatePicker
+                            isOpen={isDatePickerOpen}
+                            onClose={() => { setIsDatePickerOpen(false); handleDateTime(); }}
+                            selectedDate={selectedDate}
+                            onChange={(date) => setSelectedDate(date)}
+                        />
+                        <div className='flex items-center gap-2 flex-wrap'>
+                            <p className='font-bold'>Prioridade:</p>
+                            <button onClick={() => setPrioridade(0)} className='bg-gray-500 text-white px-2 py-1 rounded-xl hover:bg-gray-600'>Baixa</button>
+                            <button onClick={() => setPrioridade(1)} className='bg-blue-500 text-white px-2 py-1 rounded-xl hover:bg-blue-600'>Media</button>
+                            <button onClick={() => setPrioridade(2)} className='bg-red-500 text-white px-2 py-1 rounded-xl hover:bg-red-600'>Alta</button>
+                        </div>
+                        {prioridade == 0 && (
+                            <p>Prioridade Selecionada: Baixa</p>
+                        )}
+                        {prioridade == 1 && (
+                            <p>Prioridade Selecionada: <span className='text-blue-500'>Media</span></p>
+                        )}
+                        {prioridade == 2 && (
+                            <p>Prioridade Selecionada: <span className='text-red-500'>Alta</span></p>
+                        )}
                         <p className='text-red-500'>{errorCategory}</p>
                         <div className="flex gap-4 justify-between">
-                            <button onClick={() => CriarTarefa()} className="bg-green-500 text-white p-2 rounded-xl hover:bg-green-600">Criar</button>
-                            <button onClick={() => setIsOpenTarefa(false)} className="bg-red-500 text-white p-2 rounded-xl hover:bg-red-600">Cancelar</button>
+                            <button onClick={() => { CriarTarefa(); setDateTimeFor(""); setPrioridade(0); }} className="bg-green-500 text-white p-2 rounded-xl hover:bg-green-600">Criar</button>
+                            <button onClick={() => { setIsOpenTarefa(false); setDateTimeFor(""); setPrioridade(0); }} className="bg-red-500 text-white p-2 rounded-xl hover:bg-red-600">Cancelar</button>
                         </div>
                     </DialogPanel>
                 </div>
@@ -237,7 +284,7 @@ function Categorias() {
                             </div>
                         ))}
                         <div className='border-t-2'>
-                            <PlusCircleIcon onClick={() => {setIsOpenTarefa(true); setCategoriaId(item.id); setCategoriaSelecionada(item.nome);}} aria-hidden="true" className="size-6 text-green-500 cursor-pointer m-2" />
+                            <PlusCircleIcon onClick={() => { setIsOpenTarefa(true); setCategoriaId(item.id); setCategoriaSelecionada(item.nome); }} aria-hidden="true" className="size-6 text-green-500 cursor-pointer m-2" />
                         </div>
                         <div className="absolute flex gap-2 items-center top-2 right-2">
                             <PencilIcon onClick={() => { setIsOpenEdit(true); setCategoriaEditando(item); }} aria-hidden="true" className="size-6 text-white bg-blue-500 rounded-full p-[2px] cursor-pointer" />
