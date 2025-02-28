@@ -135,6 +135,9 @@ const Header = () => {
                                         <Link onClick={() => fecharMobileMenu()} to="/Sobre" className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
                                             Sobre Nós
                                         </Link>
+                                        <Link onClick={() => fecharMobileMenu()} to="/Playground" className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
+                                            Playground
+                                        </Link>
                                     </div>
                                     <div className="py-6 flex flex-col gap-4">
                                         <Link onClick={() => fecharMobileMenu()} to="/Registrar" className="text-sm/6 font-semibold text-gray-900">
