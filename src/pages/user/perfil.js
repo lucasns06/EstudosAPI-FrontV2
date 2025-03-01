@@ -1,11 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../userContext"
 import { WrenchIcon } from '@heroicons/react/24/outline';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import api from "../../services/axios";
 
 export default function Perfil() {
+    useEffect(() => {
+          document.title = "EstudosAPI - Perfil"
+    }, [])
+
     const navigate = useNavigate();
     const { user, setUser } = useUser();
     const [openModalConfig, setOpenModalConfig] = useState(false);

@@ -1,9 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../services/axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 
-function Registro() {
+function Registro() {    
+    useEffect(() => {
+          document.title = "EstudosAPI - Registrar"
+    }, [])
+
     const [passwordError, setPasswordError] = useState("");
     let [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();

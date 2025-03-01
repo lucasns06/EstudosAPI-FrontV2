@@ -1,8 +1,11 @@
 import { useGSAP } from "@gsap/react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import gsap from 'gsap';
 
 function Sobre() {
+    useEffect(() => {
+          document.title = "EstudosAPI - Sobre"
+    }, [])
     const aboutPage = useRef();
     useGSAP(() => {
         gsap.fromTo('.animaAbout', {

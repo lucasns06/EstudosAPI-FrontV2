@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUser } from "../../userContext";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/axios";
 
 function Login() {
+    useEffect(() => {
+          document.title = "EstudosAPI - Login"
+    }, [])
+
     const navigate = useNavigate();
     const { setUser } = useUser();
     const [erro, setErro] = useState(false);

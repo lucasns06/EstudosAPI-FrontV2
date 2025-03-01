@@ -26,6 +26,8 @@ function Playground() {
     useEffect(() => {
         const savedCategorias = JSON.parse(localStorage.getItem('categorias')) || [];
         setCategorias(savedCategorias);
+
+        document.title = "EstudosAPI - Playground"
     }, []);
 
     function handleButtons() {

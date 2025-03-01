@@ -37,6 +37,8 @@ function Categorias() {
     useEffect(() => {
         const buttonActiveSaved = localStorage.getItem('buttonActiveData');
         setButtonsActive(JSON.parse(buttonActiveSaved));
+
+        document.title = 'EstudosAPI - Categorias'
     }, [])
 
     function handleButtons() {

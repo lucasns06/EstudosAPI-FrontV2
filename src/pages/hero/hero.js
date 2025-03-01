@@ -33,6 +33,9 @@ function Hero() {
             icon: FingerPrintIcon,
         },
     ]
+    useEffect(() => {
+          document.title = "EstudosAPI"
+    }, [])
 
     gsap.registerPlugin(useGSAP, ScrollTrigger);
 
