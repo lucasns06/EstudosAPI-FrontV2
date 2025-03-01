@@ -6,7 +6,7 @@ function Footer() {
                 <div class="md:flex md:justify-between">
                     <div class="mb-6 md:mb-0">
                         <a href="/" class="flex items-center">
-                            <img src="study_icon.png" class="h-8 me-3" alt="FlowBite Logo" />
+                            <img src="study_icon.png" class="h-8 me-3" alt="EstudosAPI Logo" />
                             <span class="self-center text-2xl font-semibold whitespace-nowrap ">EstudosAPI</span>
                         </a>
                         <a href="https://github.com/lucasns06">Criado por <span className="text-blue-400">Lucas Nascimento</span></a>

@@ -24,8 +24,8 @@ function Sobre() {
             <h1 className="animaAbout text-center text-3xl sm:text-6xl">
                 Criado Por <span className="text-blue-500">Lucas Nascimento</span>
             </h1>
-            <a className="rounded-full" href="https://github.com/lucasns06" target="_blank" rel="noopener noreferrer">
-                <img className="animaAbout rounded-full border-4 border-blue-500 hover:border-blue-600" src="https://avatars.githubusercontent.com/u/170823502?v=4" />
+            <a href="https://github.com/lucasns06" target="_blank" rel="noopener noreferrer" className="rounded-full" >
+                <img className="animaAbout rounded-full border-4 border-blue-500 hover:border-blue-600" src="https://avatars.githubusercontent.com/u/170823502?v=4" alt="foto de perfil" />
             </a>
             <h1 className="animaAbout text-2xl">Gostou do site? veja o meu <a className="text-blue-500 font-bold" href="https://lucasns06.github.io/portfolio/" target="_blank" rel="noopener noreferrer">Portfolio</a></h1>
         </div>

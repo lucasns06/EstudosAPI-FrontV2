@@ -21,7 +21,7 @@ const Header = () => {
                         <Link to="/Categorias" className="-m-1.5 p-1.5 flex items-center gap-2">
                             <span className="sr-only">EstudosAPI</span>
                             <img
-                                alt=""
+                                alt="logo do site"
                                 src="study_icon.png"
                                 className="h-8 w-auto" />
                             <p className='text-blue-500 font-bold'>EstudosAPI</p>
@@ -30,7 +30,7 @@ const Header = () => {
                         <a href="/" className="-m-1.5 p-1.5 flex items-center gap-2">
                             <span className="sr-only">EstudosAPI</span>
                             <img
-                                alt=""
+                                alt="logo do site"
                                 src="study_icon.png"
                                 className="h-8 w-auto" />
                             <p className='text-blue-500 font-bold'>EstudosAPI</p>
@@ -90,7 +90,7 @@ const Header = () => {
                             <Link onClick={() => fecharMobileMenu()} to="/Categorias" className="-m-1.5 p-1.5 flex items-center gap-2">
                                 <span className="sr-only">Your Company</span>
                                 <img
-                                    alt=""
+                                    alt="logo do site Mobile"
                                     src="study_icon.png"
                                     className="h-8 w-auto" />
                                 <p className='text-blue-500 font-bold'>EstudosAPI</p>
@@ -99,7 +99,7 @@ const Header = () => {
                             <Link onClick={() => fecharMobileMenu()} to="/" className="-m-1.5 p-1.5 flex items-center gap-2">
                                 <span className="sr-only">Your Company</span>
                                 <img
-                                    alt=""
+                                    alt="logo do site Mobile"
                                     src="study_icon.png"
                                     className="h-8 w-auto" />
                                 <p className='text-blue-500 font-bold'>EstudosAPI</p>

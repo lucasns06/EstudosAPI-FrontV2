@@ -115,7 +115,6 @@ function Hero() {
                             </Link>
                         </div>
                     </div>
-                    {/* <img src="study.png" /> */}
                     <Lottie
                         className='animaHeroFirstImg'
                         animationData={studyAnima}
