@@ -53,7 +53,7 @@ function Categorias() {
     }
     useEffect(() => {
         if (user) {
-            api.get(`/Categorias/GetByUsuario/${user.id}`, {
+            api.get(`/Categorias/GetByUsuario`, {
                 headers: {
                     'Authorization': `Bearer ${user.token}`
                 }
@@ -79,7 +79,6 @@ function Categorias() {
         } else {
             api.post('/Categorias', {
                 nome: nomeDigitado,
-                usuarioId: user.id
             },
                 {
                     headers: {
